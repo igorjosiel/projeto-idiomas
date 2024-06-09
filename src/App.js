@@ -15,49 +15,57 @@ function App() {
     {
       id: 1,
       word: 'Olá',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 2,
       word: 'Casa',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 3,
       word: 'Homem',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 4,
       word: 'Computador',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 5,
       word: 'Ir',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 6,
       word: 'Branco',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 7,
       word: 'Banco',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 8,
       word: 'Garrafa',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
   ]);
@@ -66,49 +74,57 @@ function App() {
     {
       id: 5,
       word: 'To go',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 4,
       word: 'Computer',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 1,
       word: 'Hello',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 8,
       word: 'Bottle',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 6,
       word: 'white',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 3,
       word: 'Man',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 2,
       word: 'House',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
     {
       id: 7,
       word: 'bank',
-      disabled: false,
+      correct: false,
+      wrong: false,
       selected: false,
     },
   ]);
@@ -131,22 +147,55 @@ function App() {
     }
 
     if (button1 && button2) {
-      console.log('Teste');
       if (value1 === value2) {
         setAcertos(oldState => oldState + 1);
         setParesFaltam(oldState => oldState - 1);
 
         setWordsPortuguese(prevWords =>
           prevWords.map(wordP =>
-            wordP.id === palavraSelecionada.id ? { ...wordP, disabled: true } : wordP
+            wordP.id === palavraSelecionada.id ? { ...wordP, correct: true } : wordP
           )
         );
 
         setWordsEnglish(prevWords =>
           prevWords.map(wordE =>
-            wordE.id === palavraSelecionada.id ? { ...wordE, disabled: true } : wordE
+            wordE.id === palavraSelecionada.id ? { ...wordE, correct: true } : wordE
           )
         );
+      } else {
+        setWordsPortuguese(prevWords =>
+          prevWords.map(wordP =>
+            wordP.id === value1 ? { ...wordP, wrong: true } : wordP
+          )
+        );
+
+        setWordsEnglish(prevWords =>
+          prevWords.map(wordE =>
+            wordE.id === value2 ? { ...wordE, wrong: true } : wordE
+          )
+        );
+
+        setTimeout(() => {
+          setWordsPortuguese(prevWords =>
+            prevWords.map(wordP =>
+              wordP.id === value1 ? {
+                ...wordP,
+                wrong: false,
+                selected: false,
+              } : wordP
+            )
+          );
+  
+          setWordsEnglish(prevWords =>
+            prevWords.map(wordE =>
+              wordE.id === value2 ? {
+                ...wordE,
+                wrong: false,
+                selected: false,
+              } : wordE
+            )
+          );
+        }, 5000);
       }
 
       setButton1(false);
@@ -180,12 +229,12 @@ function App() {
             <button style={{
               width: '30%',
               height: '40px',
-              cursor: portuguese.disabled ? 'auto' : 'pointer',
-              border: portuguese.disabled ? '' : 'solid 2px blue',
-              backgroundColor: portuguese.disabled ? 'green' : portuguese.selected ? 'blue' : '',
-              color: portuguese.selected || portuguese.disabled ? '#FFF' : '#000',
+              cursor: portuguese.correct ? 'auto' : 'pointer',
+              border: portuguese.correct || portuguese.wrong ? '' : 'solid 2px blue',
+              backgroundColor: portuguese.correct ? 'green' : portuguese.wrong ? 'red' : portuguese.selected ? 'blue' : '',
+              color: portuguese.selected || portuguese.correct || portuguese.wrong ? '#FFF' : '#000',
               borderRadius: 4,
-            }} key={portuguese.id} disabled={portuguese.disabled} onClick={() => handleClick1(portuguese)}>{portuguese.word}</button>
+            }} key={portuguese.id} disabled={portuguese.correct} onClick={() => handleClick1(portuguese)}>{portuguese.word}</button>
           );
         })}
       </div>
@@ -195,12 +244,12 @@ function App() {
             <button style={{
               width: '30%',
               height: '40px',
-              cursor: english.disabled ? 'auto' : 'pointer',
-              border: english.disabled ? '' : 'solid 2px blue',
-              backgroundColor: english.disabled ? 'green' : english.selected ? 'blue' : '',
-              color: english.selected || english.disabled ? '#FFF' : '#000',
+              cursor: english.correct ? 'auto' : 'pointer',
+              border: english.correct || english.wrong ? '' : 'solid 2px blue',
+              backgroundColor: english.correct ? 'green' : english.wrong ? 'red' : english.selected ? 'blue' : '',
+              color: english.selected || english.correct || english.wrong ? '#FFF' : '#000',
               borderRadius: 4,
-            }} key={english.id} disabled={english.disabled} onClick={() => handleClick2(english)}>{english.word}</button>
+            }} key={english.id} disabled={english.correct} onClick={() => handleClick2(english)}>{english.word}</button>
           );
         })}
       </div>
